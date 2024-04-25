@@ -2,6 +2,8 @@
 #include <iostream>
 
 using namespace std;
+using namespace ariel;
+
 
 Graph::Graph() {}
 
