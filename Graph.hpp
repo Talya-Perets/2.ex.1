@@ -2,7 +2,7 @@
 #define GRAPH_HPP
 
 #include <vector>
-
+namespace ariel{
 using namespace std;
 
 class Graph {
@@ -16,5 +16,5 @@ public:
 private:
     vector<vector<int>> graph_matrix;
 };
-
+}
 #endif
