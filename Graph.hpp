@@ -2,19 +2,24 @@
 #define GRAPH_HPP
 
 #include <vector>
-namespace ariel{
-using namespace std;
+#include <stdexcept>
 
-class Graph {
-public:
-    Graph();
-    void loadGraph(const vector<vector<int>>& graph_matrix);
-    void printGraph() const;
-    int count_edges() const;
-    bool isDirected() const;
-    int isWeighted() const; // Function added to check if the graph is weighted (1), unweighted and non-negative (0), or contains negative edges (-1)
-private:
-    vector<vector<int>> graph_matrix;
-};
+namespace ariel {
+
+    class Graph {
+    public:
+        Graph();
+        void loadGraph(const std::vector<std::vector<int>>& graph_matrix);
+        void printGraph() const;
+        int countEdges() const;
+        bool isDirected() const;
+        int isWeighted() const; 
+        const std::vector<std::vector<int>>& getGraphMatrix() const;
+
+    private:
+        std::vector<std::vector<int>> graph_matrix;
+    };
+
 }
+
 #endif
