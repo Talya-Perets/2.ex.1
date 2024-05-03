@@ -2,18 +2,24 @@
 #define GRAPH_HPP
 
 #include <vector>
+#include <stdexcept>
 
 namespace ariel {
-    class Graph {
-    private:
-        std::vector<std::vector<int>> adjacencyMatrix;
 
+    class Graph {
     public:
-        Graph(); // Constructor
-        void loadGraph(const std::vector<std::vector<int>>& matrix);
+        Graph();
+        void loadGraph(const std::vector<std::vector<int>>& graph_matrix);
         void printGraph() const;
-        std::vector<std::vector<int>> getAdjacencyMatrix() const; // פונקציה חסרה
+        int countEdges() const;
+        bool isDirected() const;
+        int isWeighted() const; 
+        const std::vector<std::vector<int>>& getGraphMatrix() const;
+
+    private:
+        std::vector<std::vector<int>> graph_matrix;
     };
+
 }
 
-#endif // GRAPH_HPP
+#endif
