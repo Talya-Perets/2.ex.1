@@ -31,28 +31,17 @@ namespace ariel {
         int edges_count = 0;
 
         for (int i = 0; i < graph_matrix.size(); ++i) {
-            for (int j = i + 1; j < graph_matrix.size(); ++j) {
-                if (graph_matrix[i][j] != 0) {
-                    edges_count++;
-                }
-            }
+           for (int j = i + 1; j < graph_matrix.size(); ++j) {
+            if (static_cast<unsigned int>(graph_matrix[i][j]) != 0) {
+              edges_count++;
         }
+    }
+ }
 
         return edges_count;
     }
 
-    bool Graph::isDirected() const {
-        // Checks if the adjacency matrix is symmetric
-        for (int i = 0; i < graph_matrix.size(); ++i) {
-            for (int j = 0; j < graph_matrix.size(); ++j) {
-                if (graph_matrix[i][j] != graph_matrix[j][i]) {
-                    return true; // The graph is directed
-                }
-            }
-        }
 
-        return false; // The graph is undirected
-    }
 
     int Graph::isWeighted() const {
         // Checks if the graph is weighted and if it contains negative edges
