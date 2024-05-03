@@ -7,7 +7,6 @@
 
 using namespace ariel;
 
-
  static int checkGraphType(const Graph& g) {
 
     bool hasPositiveWeights = false;
