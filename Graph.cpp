@@ -1,23 +1,19 @@
-#include "Graph.hpp"
-#include <iostream>
+#ifndef GRAPH_HPP
+#define GRAPH_HPP
 
-using namespace ariel;
-Graph::Graph() {}
+#include <vector>
 
-void Graph::loadGraph(const std::vector<std::vector<int>>& matrix) {
-    adjacencyMatrix = matrix;
+namespace ariel {
+    class Graph {
+    private:
+        std::vector<std::vector<int>> adjacencyMatrix;
+
+    public:
+        Graph(); // Constructor
+        void loadGraph(const std::vector<std::vector<int>>& matrix);
+        void printGraph() const;
+        std::vector<std::vector<int>> getAdjacencyMatrix() const; // פונקציה חסרה
+    };
 }
 
-void Graph::printGraph() const {
-    // Print the adjacency matrix
-    for (const auto& row : adjacencyMatrix) {
-        for (int val : row) {
-            std::cout << val << " ";
-        }
-        std::cout << std::endl;
-    }
-}
-
-std::vector<std::vector<int>> Graph::getAdjacencyMatrix() const {
-    return adjacencyMatrix;
-}
+#endif // GRAPH_HPP
