@@ -26,20 +26,39 @@ namespace ariel {
             std::cout << std::endl;
         }
     }
-
-    int Graph::countEdges() const {
-        int edges_count = 0;
-
-        for (int i = 0; i < graph_matrix.size(); ++i) {
-           for (int j = i + 1; j < graph_matrix.size(); ++j) {
-            if (static_cast<unsigned int>(graph_matrix[i][j]) != 0) {
-              edges_count++;
+       bool Graph::isDirected() const{
+    // מאוד פשוט לבדוק רק את האלכסון העליון של המטריצה,
+    // אם יש קשת נמצאת רק באותו המקום במטריצה כשהגרף הוא לא מכוון
+    for (size_t i = 0; i < graph_matrix.size(); ++i) {
+        for (size_t j = i + 1; j < graph_matrix.size(); ++j) {
+            if (graph_matrix[i][j] != graph_matrix[j][i]) {
+                return true; // יש קשת שונה באותו המקום - הגרף הוא מכוון
+            }
         }
     }
- }
 
-        return edges_count;
+    return false; // אם אין קשתות שונות, הגרף אינו מכוון
+}
+
+    int Graph::countEdges() const {
+   int edges_count = 0;
+
+    // Check if the graph is directed
+    bool directed = isDirected();
+
+    for (size_t i = 0; i < graph_matrix.size(); ++i) {
+        for (size_t j = 0; j < graph_matrix.size(); ++j) {
+            // For directed graph, count only if there's an edge from i to j
+            // For undirected graph, count if there's any edge between i and j
+            if ((graph_matrix[i][j] > 0) && (!directed || (directed && graph_matrix[j][i] > 0))) {
+                edges_count++;
+            }
+        }
     }
+
+    return edges_count;
+}
+
 
 
 
