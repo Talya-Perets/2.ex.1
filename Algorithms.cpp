@@ -141,6 +141,7 @@ std::string Algorithms::Dijkstra(const Graph& g, size_t start, size_t end) {
 
     return path;
 }
+
 std::string Algorithms::BellmanFord(const Graph& g, size_t start, size_t end) {
   const std::vector<vector<int>>& graph_matrix = g.getGraphMatrix();
   size_t n = graph_matrix.size();
@@ -185,37 +186,50 @@ std::string Algorithms::BellmanFord(const Graph& g, size_t start, size_t end) {
   return path;
 }
 
-bool Algorithms::isContainsCycle(const Graph& g) {
+
+string Algorithms::isContainsCycle(const Graph& g) {
     const std::vector<std::vector<int>>& graph_matrix = g.getGraphMatrix();
     size_t n = graph_matrix.size();
 
-    // בדיקה עבור כל קודקוד בגרף
+    // Check for cycles using Depth-First Search (DFS)
+    std::vector<bool> visited(n, false); // Mark nodes as visited
+    std::vector<int> parent(n, -1); // Keep track of parent nodes in DFS tree
+
     for (size_t i = 0; i < n; ++i) {
-        std::vector<bool> visited(n, false); // מערך שמסמן האם קודקוד נבדק
-        std::queue<size_t> q;
-        q.push(i);
-        visited[i] = true;
-
-        while (!q.empty()) {
-            size_t curr = q.front();
-            q.pop();
-
-            // בדיקה עבור כל השכנים של הקודקוד הנוכחי
-            for (size_t j = 0; j < n; ++j) {
-                if (graph_matrix[curr][j] != 0) {
-                    size_t next = j;
-                    // אם הקשת קיימת והקודקוד הבא כבר נבדק - יש מעגל
-                    if (visited[next]) {
-                        return true;
-                    }
-                    q.push(next);
-                    visited[next] = true;
-                }
+        if (!visited[i] && DFSUtil(graph_matrix, i, visited, parent)) {
+            // Cycle detected, reconstruct and return the cycle
+            std::string cycle = "The cycle is: ";
+            size_t start = i;
+            int end = parent[i];
+            while (start != static_cast<size_t>(end)) {
+                cycle += std::to_string(start) + "->";
+                start = static_cast<size_t>(parent[start]);
             }
+            cycle += std::to_string(end) + "->" + std::to_string(i);
+            return cycle;
+           // return true;
         }
     }
 
-    // אם לא נמצאו מעגלים
+    // If no cycle found, return "0"
+    return "0";
+    //return false;
+}
+
+bool  Algorithms::DFSUtil(const std::vector<std::vector<int>>& graph_matrix, size_t v, std::vector<bool>& visited, std::vector<int>& parent) {
+    visited[v] = true; // Mark current node as visited
+
+    // Recur for all vertices adjacent to this vertex
+    for (size_t i = 0; i < graph_matrix.size(); ++i) {
+        if (graph_matrix[v][i] && !visited[i]) {
+            parent[i] = v; // Set parent of adjacent vertex
+            if (DFSUtil(graph_matrix, i, visited, parent)) return true;
+        } else if (graph_matrix[v][i] && visited[i] && parent[v] != i) {
+            // If an adjacent vertex is visited and not parent of current vertex, then there's a cycle
+            return true;
+        }
+    }
+
     return false;
 }
 
