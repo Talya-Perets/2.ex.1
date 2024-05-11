@@ -1,85 +1,123 @@
+// id: 322353780 mail:talyape123@gmail.com
+
+/*
+ * Demo program for Exercise 2.
+ * Author: Benjamin Saldman.
+ */
+
 #include "Graph.hpp"
+#include "Algorithms.hpp"
+using ariel::Algorithms;
+
 #include <iostream>
+#include <stdexcept>
+#include <vector>
+using namespace std;
 
-namespace ariel {
+int main()
+{
+    ariel::Graph g;
+    // 3x3 matrix that represents a connected graph.
+    vector<vector<int>> graph = {
+        {0, 1, 0},
+        {1, 0, 1},
+        {0, 1, 0}};
+    g.loadGraph(graph); // Load the graph to the object.
 
-    Graph::Graph() {}
+    g.printGraph();                                    // Should print: "Graph with 3 vertices and 4 edges."
+    cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
+    cout << Algorithms::shortestPath(g, 0, 2) << endl; // Should print: 0->1->2.
+    cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
+    cout << Algorithms::isBipartite(g) << endl;        // Should print: "The graph is bipartite: A={0, 2}, B={1}."
 
-    void Graph::loadGraph(const std::vector<std::vector<int>>& graph_matrix) {
-        // Checks if the graph matrix is square
-        if (graph_matrix.size() != graph_matrix[0].size()) {
-            throw std::invalid_argument("Invalid graph: The graph is not a square matrix.");
-        }
+    // 5x5 matrix that represents a non-connected graph with a cycle.
+    vector<vector<int>> graph2 = {
+        {0, 1, 1, 0, 0},
+        {1, 0, 1, 0, 0},
+        {1, 1, 0, 1, 0},
+        {0, 0, 1, 0, 0},
+        {0, 0, 0, 0, 0}};
 
-        // Copies the graph matrix
-        this->graph_matrix = graph_matrix;
+    g.loadGraph(graph2); // Load the graph to the object.
+
+    g.printGraph();                                    // Should print: "Graph with 5 vertices and 8 edges."
+    cout << Algorithms::isConnected(g) << endl;        // Should print: "0" (false).
+    cout << Algorithms::shortestPath(g, 0, 4) << endl; // Should print: "-1" (there is no path between 0 and 4).
+    cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "The cycle is: 0->1->2->0".
+    cout << Algorithms::isBipartite(g) << endl;        // Should print: "0" (false).
+
+    // 5x5 matrix that reprsents a connected weighted graph.
+    vector<vector<int>> graph3 = {
+        {0, 1, 2, 0, 0},
+        {1, 0, 3, 0, 0},
+        {2, 3, 0, 4, 0},
+        {0, 0, 4, 0, 5},
+        {0, 0, 0, 5, 0}};
+    g.loadGraph(graph3); // Load the graph to the object.
+
+    g.printGraph();                                    // Should print: "Graph with 5 vertices and 10 edges."
+    cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
+    cout << Algorithms::shortestPath(g, 0, 4) << endl; // Should print: 0->2->3->4.
+    cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
+    cout << Algorithms::isBipartite(g) << endl;        // Should print: "The graph is bipartite: A={0, 2, 4}, B={1, 3}."
+ 
+ vector<vector<int>> graph5 = {
+        {0, 3, 0, 0, 7, 0},
+        {3, 0, 4, 0, 0, 1},
+        {0, 4, 0, 5, 0, 0},
+        {0, 0, 5, 0, 0, 0},
+        {7, 0, 0, 0, 0, 1},
+        {0, 1, 0, 0, 1, 0}};
+    g.loadGraph(graph5); // Load the graph to the object.
+
+    g.printGraph();                                    // Should print: "Graph with 5 vertices and 10 edges."
+    cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
+    cout << Algorithms::shortestPath(g, 0, 4) << endl; // Should print: 0->2->3->4.
+    cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
+    cout << Algorithms::isBipartite(g) << endl;        // Should print: "The graph is bipartite: A={0, 2, 4}, B={1, 3}."
+
+vector<vector<int>> graph6 = {
+        {0, 1, 0, 0, 0, 0},
+        {0, 0, -5, 0, 0, 0},
+        {0, 0, 0, 2, 0, 0},
+        {0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 2, 0}};
+    g.loadGraph(graph6); // Load the graph to the object.
+
+    g.printGraph();                                    // Should print: "Graph with 5 vertices and 10 edges."
+    cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
+    cout << Algorithms::shortestPath(g, 0, 4) << endl; // Should print: 0->2->3->4.
+    cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
+    cout << Algorithms::isBipartite(g) << endl;        // Should print: "The graph is bipartite: A={0, 2, 4}, B={1, 3}."
+
+
+vector<vector<int>> graph7 = {
+        {0, 1, -5, 1},
+        {1, 0, 3, 0},
+        {-5, 3, 0, 0},
+        {1, 0, 0, 0}};
+g.loadGraph(graph7); // Load the graph to the object.
+
+    g.printGraph();                        
+        cout << Algorithms::shortestPath(g, 0, 3) << endl;  ;
+        cout << Algorithms::isContainsCycle(g) << endl;    
+         cout << Algorithms::negativeCycle(g) << endl;    // Should print: "0" (false).
+
+
+    // 5x4 matrix that reprsents invalid graph.
+    vector<vector<int>> graph4 = {
+        {0, 1, 0, 0},
+        {1, 0, 3, 0},
+        {2, 3, 0, 4},
+        {0, 0, 4, 0},
+        {0, 0, 0, 5}};
+    try
+    {
+        g.loadGraph(graph4); // Load the graph to the object.
     }
-
-    void Graph::printGraph() const {
-        std::cout << "Graph with " << graph_matrix.size() << " vertices and " << countEdges() << " edges." << std::endl;
-
-        // Prints the adjacency matrix
-        for (const std::vector<int>& row : graph_matrix) {
-            for (int element : row) {
-                std::cout << element << " ";
-            }
-            std::cout << std::endl;
-        }
+    catch (const std::invalid_argument &e)
+    {
+        cout << e.what() << endl; // Should print: "Invalid graph: The graph is not a square matrix."
     }
-       bool Graph::isDirected() const{
-    // מאוד פשוט לבדוק רק את האלכסון העליון של המטריצה,
-    // אם יש קשת נמצאת רק באותו המקום במטריצה כשהגרף הוא לא מכוון
-    for (size_t i = 0; i < graph_matrix.size(); ++i) {
-        for (size_t j = i + 1; j < graph_matrix.size(); ++j) {
-            if (graph_matrix[i][j] != graph_matrix[j][i]) {
-                return true; // יש קשת שונה באותו המקום - הגרף הוא מכוון
-            }
-        }
-    }
-
-    return false; // אם אין קשתות שונות, הגרף אינו מכוון
-}
-
-    int Graph::countEdges() const {
-   int edges_count = 0;
-
-    // Check if the graph is directed
-    bool directed = isDirected();
-
-    for (size_t i = 0; i < graph_matrix.size(); ++i) {
-        for (size_t j = 0; j < graph_matrix.size(); ++j) {
-            // For directed graph, count only if there's an edge from i to j
-            // For undirected graph, count if there's any edge between i and j
-            if ((graph_matrix[i][j] > 0) && (!directed || (directed && graph_matrix[j][i] > 0))) {
-                edges_count++;
-            }
-        }
-    }
-
-    return edges_count;
-}
-
-
-
-
-    int Graph::isWeighted() const {
-        // Checks if the graph is weighted and if it contains negative edges
-        for (const std::vector<int>& row : graph_matrix) {
-            for (int element : row) {
-                if (element != 0 && element != 1) {
-                    return 1; // The graph is weighted
-                }
-                if (element < 0) {
-                    return -1; // The graph contains negative edges
-                }
-            }
-        }
-
-        return 0; // The graph is unweighted and contains no negative edges
-    }
-
-    const std::vector<std::vector<int>>& Graph::getGraphMatrix() const {
-        return graph_matrix;
-    }
-
 }
