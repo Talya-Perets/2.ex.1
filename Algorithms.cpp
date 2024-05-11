@@ -575,4 +575,4 @@ namespace ariel
 
     // No negative cycles found
     return false;
-}
+}}
