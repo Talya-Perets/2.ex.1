@@ -246,7 +246,7 @@ TEST_CASE("Test shortestPath with negative weights")
       {4, 0, 0, 0, 5},
       {0, 0, 0, 0, 0}};
   g.loadGraph(graph_with_negative_weights);
-  CHECK(ariel::Algorithms::BellmanFord(g, 0, 4) == "0->1->2->3->4");
+  CHECK(ariel::Algorithms::shortestPath(g, 0, 4) == "0->1->2->3->4");
 }
 
 TEST_CASE("Test shortestPath with negative weights2")
@@ -292,6 +292,19 @@ TEST_CASE("Test isContainsCycle")
       {0, 0, 0, 0, 0}};
   g.loadGraph(graph2);
   CHECK(ariel::Algorithms::isContainsCycle(g) == "0 -> 2 -> 1 -> 0");
+
+
+vector<vector<int>> graph3 = {
+  { 0, -3, 0, -3, 0}, 
+{0, 0, -3, 0, 0}, 
+{0, 0, 0, -3, 0}, 
+{0, 0, 0, 0, -3}, 
+{0, 0, 0, 0, 0,}};
+  g.loadGraph(graph3);
+  CHECK(ariel::Algorithms::isContainsCycle(g) == "0");
+
+  
+
 }
 
 TEST_CASE("Test isBipartite")
@@ -312,6 +325,14 @@ TEST_CASE("Test isBipartite")
       {0, 0, 0, 0, 0}};
   g.loadGraph(graph2);
   CHECK(ariel::Algorithms::isBipartite(g) == "0");
+
+  vector<vector<int>> graph4 = {
+      {0, -3, -3},
+      {-3, 0, -3},
+      {-3, -3, 0}};
+  g.loadGraph(graph4);
+  CHECK(ariel::Algorithms::isContainsCycle(g) == "0 -> 2 -> 1 -> 0");
+
 }
 
 TEST_CASE("Test isBipartite")
@@ -380,9 +401,8 @@ TEST_CASE("Test negative cycle detection")
       {0, 0, 0, 0, -4},
       {0, 0, 0, -5, 0}};
   g.loadGraph(negative_cycle_graph);
-  bool has_negative_cycle = ariel::Algorithms::negativeCycle(g);
   // Ensure the negative cycle is detected
-  CHECK(has_negative_cycle == true);
+  CHECK(ariel::Algorithms::negativeCycle(g) == true);
 }
 TEST_CASE("Test negative cycle detection")
 {
@@ -423,3 +443,21 @@ TEST_CASE("Test invalid graph")
       {0, 0, 0, 5}};
   CHECK_THROWS(g.loadGraph(graph));
 }
+
+
+
+
+TEST_CASE("Example of shortest path that going through negative edges")
+{
+    ariel::Graph g;
+    vector<vector<int>> graph12 = {
+            {0, 1, 0, 0,  9},
+            {0, 0, 0, -2, 0},
+            {0, 3, 0, 4,  0},
+            {0, 0, 4, 0,  5},
+            {0, 0, 0, 5,  0}};
+    g.loadGraph(graph12);
+    CHECK(ariel::Algorithms::shortestPath(g, 0, 4) == "0->1->3->4");
+    CHECK(ariel::Algorithms::isConnected(g) == false);
+}
+
