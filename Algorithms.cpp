@@ -277,47 +277,25 @@ namespace ariel
 
     std::string Algorithms::isContainsCycle(const Graph &g)
     {
-        const std::vector<std::vector<int>> &graph_matrix = g.getGraphMatrix();
-        size_t n = graph_matrix.size();
-
-        // Check if the graph is directed
-        bool directed = g.isDirected();
-        if (directed)
-        {
-            return directedGetCycle(g);
-        }
-        return undirectedGetCycle(g);
-
-        // If no cycle found, return "0"
-    }
-
-    std::string Algorithms::directedGetCycle(const Graph &g)
-    {
-        const std::vector<std::vector<int>> &graph_matrix = g.getGraphMatrix();
+        const auto &graph_matrix = g.getGraphMatrix();
         size_t n = graph_matrix.size();
         std::vector<bool> visited(n, false);
-        std::vector<bool> recStack(n, false);
         std::vector<size_t> cycle;
 
         for (size_t i = 0; i < n; ++i)
         {
-            if (!visited[i] && directedDFSForCycle(graph_matrix, i, visited, recStack, cycle))
+            if (!visited[i])
             {
-                std::string result;
-                for (size_t j = 0; j < cycle.size(); ++j)
-                {
-                    result += std::to_string(cycle[j]);
-                    if (j != cycle.size() - 1)
-                        result += " -> ";
-                }
-                return result;
+                std::vector<bool> recStack(n, false);
+                if (dfsForCycle(graph_matrix, i, visited, recStack, cycle, -1))
+                    return buildCycleString(cycle);
             }
         }
 
         return "0";
     }
 
-    bool Algorithms::directedDFSForCycle(const std::vector<std::vector<int>> &graph_matrix, size_t v, std::vector<bool> &visited, std::vector<bool> &recStack, std::vector<size_t> &cycle)
+    bool Algorithms::dfsForCycle(const std::vector<std::vector<int>> &graph_matrix, size_t v, std::vector<bool> &visited, std::vector<bool> &recStack, std::vector<size_t> &cycle, int parent)
     {
         visited[v] = true;
         recStack[v] = true;
@@ -328,13 +306,13 @@ namespace ariel
             {
                 if (!visited[i])
                 {
-                    if (directedDFSForCycle(graph_matrix, i, visited, recStack, cycle))
+                    if (dfsForCycle(graph_matrix, i, visited, recStack, cycle, v))
                     {
                         cycle.push_back(v);
                         return true;
                     }
                 }
-                else if (recStack[i])
+                else if (recStack[i] && i != parent)
                 {
                     cycle.push_back(i);
                     cycle.push_back(v);
@@ -343,62 +321,152 @@ namespace ariel
             }
         }
 
-        recStack[v] = false; // Backtrack
+        recStack[v] = false;
         return false;
     }
 
-    std::string Algorithms::undirectedGetCycle(const Graph &g)
+    std::string Algorithms::buildCycleString(const std::vector<size_t> &cycle)
     {
-        const std::vector<std::vector<int>> &graph_matrix = g.getGraphMatrix();
-        size_t n = graph_matrix.size();
-        std::vector<bool> visited(n, false);
-        std::vector<size_t> cycle;
-
-        for (size_t i = 0; i < n; ++i)
+        std::string result;
+        for (size_t j = 0; j < cycle.size(); ++j)
         {
-            if (!visited[i] && undirectedDFSForCycle(graph_matrix, i, visited, -1, cycle))
-            {
-                std::string result;
-                for (size_t j = 0; j < cycle.size(); ++j)
-                {
-                    result += std::to_string(cycle[j]);
-                    if (j != cycle.size() - 1)
-                        result += " -> ";
-                }
-                return result;
-            }
+            result += std::to_string(cycle[j]);
+            if (j != cycle.size() - 1)
+                result += " -> ";
         }
-
-        return "0";
+        return result;
     }
+    //     std::string Algorithms::isContainsCycle(const Graph &g)
+    //     {
+    //         const std::vector<std::vector<int>> &graph_matrix = g.getGraphMatrix();
+    //         size_t n = graph_matrix.size();
 
-    bool Algorithms::undirectedDFSForCycle(const std::vector<std::vector<int>> &graph_matrix, size_t v, std::vector<bool> &visited, int parent, std::vector<size_t> &cycle)
-    {
-        visited[v] = true;
+    //         // Check if the graph is directed
+    //         bool directed = g.isDirected();
+    //         if (directed)
+    //         {
+    //             return directedGetCycle(g);
+    //         }
+    //         return undirectedGetCycle(g);
 
-        for (size_t i = 0; i < graph_matrix.size(); ++i)
-        {
-            if (graph_matrix[v][i] != 0)
-            {
-                if (!visited[i])
-                {
-                    if (undirectedDFSForCycle(graph_matrix, i, visited, v, cycle))
-                    {
-                        cycle.push_back(v);
-                        return true;
-                    }
-                }
-                else if (i != parent)
-                {
-                    cycle.push_back(i);
-                    cycle.push_back(v);
-                    return true;
-                }
-            }
-        }
+    //         // If no cycle found, return "0"
+    //     }
 
-        return false;
-    }
+    //  std::string Algorithms::directedGetCycle(const Graph &g)
+    // {
+    //     const std::vector<std::vector<int>> &graph_matrix = g.getGraphMatrix();
+    //     size_t n = graph_matrix.size();
+    //     std::vector<bool> visited(n, false);
+    //     std::vector<bool> recStack(n, false);
+    //     std::vector<size_t> cycle;
+
+    //     // Start DFS from each unvisited vertex
+    //     for (size_t i = 0; i < n; ++i)
+    //     {
+    //         if (!visited[i])
+    //         {
+    //             cycle.push_back(i); // Add starting vertex to the cycle
+    //             if (directedDFSForCycle(graph_matrix, i, visited, recStack, cycle))
+    //             {
+    //                 // Add starting vertex again only after complete cycle
+    //                 cycle.push_back(i);
+    //                 std::string result;
+    //                 for (size_t j = 0; j < cycle.size(); ++j)
+    //                 {
+    //                     result += std::to_string(cycle[j]);
+    //                     if (j != cycle.size() - 1)
+    //                         result += " -> ";
+    //                 }
+    //                 return result;
+    //             }
+    //             cycle.pop_back(); // Remove starting vertex if no cycle found
+    //         }
+    //     }
+
+    //     return "0";
+    // }
+
+    //  bool Algorithms::directedDFSForCycle(const std::vector<std::vector<int>> &graph_matrix, size_t v, std::vector<bool> &visited, std::vector<bool> &recStack, std::vector<size_t> &cycle)
+    // {
+    //     visited[v] = true;
+    //     recStack[v] = true;
+
+    //     for (size_t i = 0; i < graph_matrix.size(); ++i)
+    //     {
+    //         if (graph_matrix[v][i] != 0)
+    //         {
+    //             if (!visited[i])
+    //             {
+    //                 if (directedDFSForCycle(graph_matrix, i, visited, recStack, cycle))
+    //                 {
+    //                     cycle.push_back(v);
+    //                     return true;
+    //                 }
+    //             }
+    //             else if (recStack[i])
+    //             {
+    //                 cycle.push_back(i);
+    //                 cycle.push_back(v);
+    //                 return true;
+    //             }
+    //         }
+    //     }
+
+    //     recStack[v] = false; // Backtrack
+    //     return false;
+    // }
+    //     std::string Algorithms::undirectedGetCycle(const Graph &g)
+    //     {
+    //         const std::vector<std::vector<int>> &graph_matrix = g.getGraphMatrix();
+    //         size_t n = graph_matrix.size();
+    //         std::vector<bool> visited(n, false);
+    //         std::vector<size_t> cycle;
+
+    //         for (size_t i = 0; i < n; ++i)
+    //         {
+    //             if (!visited[i] && undirectedDFSForCycle(graph_matrix, i, visited, -1, cycle))
+    //             {
+    //                 std::string result;
+    //                 for (size_t j = 0; j < cycle.size(); ++j)
+    //                 {
+    //                     result += std::to_string(cycle[j]);
+    //                     if (j != cycle.size() - 1)
+    //                         result += " -> ";
+    //                 }
+    //                 return result;
+    //             }
+    //         }
+
+    //         return "0";
+    //     }
+
+    //     bool Algorithms::undirectedDFSForCycle(const std::vector<std::vector<int>> &graph_matrix, size_t v, std::vector<bool> &visited, int parent, std::vector<size_t> &cycle)
+    // {
+    //     visited[v] = true;
+
+    //     for (size_t i = 0; i < graph_matrix.size(); ++i)
+    //     {
+    //         if (graph_matrix[v][i] != 0)
+    //         {
+    //             if (!visited[i])
+    //             {
+    //                 if (undirectedDFSForCycle(graph_matrix, i, visited, v, cycle))
+    //                 {
+    //                     cycle.push_back(v);
+    //                     return true;
+    //                 }
+    //             }
+    //             else if (i != parent && i != v)
+    //             {
+    //                 cycle.push_back(i);
+    //                 cycle.push_back(v);
+    //                 return true;
+    //             }
+    //         }
+    //     }
+
+    //     return false;
+    // }
 
     std::string Algorithms::isBipartite(const Graph &g)
     {
@@ -476,37 +544,35 @@ namespace ariel
     }
 
     bool Algorithms::negativeCycle(const Graph &g)
+{
+    const std::vector<std::vector<int>> &graph_matrix = g.getGraphMatrix();
+    size_t n = graph_matrix.size();
+
+    // Checking for negative cycles using the Bellman-Ford algorithm
+    std::vector<int> dist(n, 0);  // Here we store the distances from the source node
+    std::vector<int> prev(n, -1); // Here we store the previous node in the shortest path
+
+    // Computing all distances from the source node
+    for (size_t i = 0; i < n; ++i)
     {
-        const std::vector<std::vector<int>> &graph_matrix = g.getGraphMatrix();
-        size_t n = graph_matrix.size();
-
-        // בדיקת מעגלים שליליים באמצעות אלגוריתם Bellman-Ford
-        std::vector<int> dist(n, 0);  // כאן נשמור את המרחקים מהצומת המקור
-        std::vector<int> prev(n, -1); // כאן נשמור את הצומת הקודמת במסלול הקצר ביותר
-
-        // חישוב כל המרחקים מצומת המקור
-        for (size_t i = 0; i < n; ++i)
+        for (size_t u = 0; u < n; ++u)
         {
-            for (size_t u = 0; u < n; ++u)
+            for (size_t v = 0; v < n; ++v)
             {
-                for (size_t v = 0; v < n; ++v)
+                if (graph_matrix[u][v] != 0 && dist[u] != std::numeric_limits<int>::max() && dist[u] + graph_matrix[u][v] < dist[v])
                 {
-                    if (graph_matrix[u][v] != 0 && dist[u] != std::numeric_limits<int>::max() && dist[u] + graph_matrix[u][v] < dist[v])
+                    dist[v] = dist[u] + graph_matrix[u][v];
+                    prev[v] = u;
+                    if (i == n - 1)
                     {
-                        dist[v] = dist[u] + graph_matrix[u][v];
-                        prev[v] = u;
-                        if (i == n - 1)
-                        {
-                            // יש מעגל שלילי - חזרה על עצמו
-                            return true;
-                        }
+                        // Negative cycle detected - it repeats itself
+                        return true;
                     }
                 }
             }
         }
-
-        // אין מעגלים שליליים
-        return false;
     }
 
+    // No negative cycles found
+    return false;
 }
