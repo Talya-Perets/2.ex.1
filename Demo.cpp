@@ -104,7 +104,19 @@ g.loadGraph(graph7); // Load the graph to the object.
         cout << Algorithms::isContainsCycle(g) << endl;    
          cout << Algorithms::negativeCycle(g) << endl;    // Should print: "0" (false).
 
+vector<vector<int>> graph8 = {
+     {0, 1, 0, 0,  9},
+            {0, 0, 0, -2, 0},
+            {0, 3, 0, 4,  0},
+            {0, 1, 4, 0,  5},
+            {0, 0, 0, 5,  0}};
+       
+g.loadGraph(graph8); // Load the graph to the object.
 
+    g.printGraph();
+
+  cout << Algorithms::isContainsCycle(g) << endl;  
+        
     // 5x4 matrix that reprsents invalid graph.
     vector<vector<int>> graph4 = {
         {0, 1, 0, 0},
