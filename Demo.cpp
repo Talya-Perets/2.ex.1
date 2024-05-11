@@ -1,3 +1,5 @@
+// id: 322353780 mail:talyape123@gmail.com
+
 /*
  * Demo program for Exercise 2.
  * Author: Benjamin Saldman.
@@ -58,10 +60,54 @@ int main()
     cout << Algorithms::shortestPath(g, 0, 4) << endl; // Should print: 0->2->3->4.
     cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
     cout << Algorithms::isBipartite(g) << endl;        // Should print: "The graph is bipartite: A={0, 2, 4}, B={1, 3}."
+ 
+ vector<vector<int>> graph5 = {
+        {0, 3, 0, 0, 7, 0},
+        {3, 0, 4, 0, 0, 1},
+        {0, 4, 0, 5, 0, 0},
+        {0, 0, 5, 0, 0, 0},
+        {7, 0, 0, 0, 0, 1},
+        {0, 1, 0, 0, 1, 0}};
+    g.loadGraph(graph5); // Load the graph to the object.
+
+    g.printGraph();                                    // Should print: "Graph with 5 vertices and 10 edges."
+    cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
+    cout << Algorithms::shortestPath(g, 0, 4) << endl; // Should print: 0->2->3->4.
+    cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
+    cout << Algorithms::isBipartite(g) << endl;        // Should print: "The graph is bipartite: A={0, 2, 4}, B={1, 3}."
+
+vector<vector<int>> graph6 = {
+        {0, 1, 0, 0, 0, 0},
+        {0, 0, -5, 0, 0, 0},
+        {0, 0, 0, 2, 0, 0},
+        {0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 2, 0}};
+    g.loadGraph(graph6); // Load the graph to the object.
+
+    g.printGraph();                                    // Should print: "Graph with 5 vertices and 10 edges."
+    cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
+    cout << Algorithms::shortestPath(g, 0, 4) << endl; // Should print: 0->2->3->4.
+    cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
+    cout << Algorithms::isBipartite(g) << endl;        // Should print: "The graph is bipartite: A={0, 2, 4}, B={1, 3}."
+
+
+vector<vector<int>> graph7 = {
+        {0, 1, -5, 1},
+        {1, 0, 3, 0},
+        {-5, 3, 0, 0},
+        {1, 0, 0, 0}};
+g.loadGraph(graph7); // Load the graph to the object.
+
+    g.printGraph();                        
+        cout << Algorithms::shortestPath(g, 0, 3) << endl;  ;
+        cout << Algorithms::isContainsCycle(g) << endl;    
+         cout << Algorithms::negativeCycle(g) << endl;    // Should print: "0" (false).
+
 
     // 5x4 matrix that reprsents invalid graph.
     vector<vector<int>> graph4 = {
-        {0, 1, 2, 0},
+        {0, 1, 0, 0},
         {1, 0, 3, 0},
         {2, 3, 0, 4},
         {0, 0, 4, 0},
