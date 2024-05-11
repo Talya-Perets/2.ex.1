@@ -1,3 +1,5 @@
+// id: 322353780 mail:talyape123@gmail.com
+
 #ifndef ALGORITHMS_HPP
 #define ALGORITHMS_HPP
 
@@ -9,20 +11,25 @@
 #include <limits>
 #include "Graph.hpp"
 
-namespace ariel {
+namespace ariel
+{
 
-    class Algorithms {
+    class Algorithms
+    {
     public:
-        static bool isConnected(const Graph& g);
-        static std::string shortestPath(const Graph& g, int start, int end);
-        static std::string isContainsCycle(const Graph& g);
-         static bool DFSUtil(const std::vector<std::vector<int>>& graph_matrix, size_t v, std::vector<bool>& visited, std::vector<int>& parent) ;
-
-        static std::string isBipartite(const Graph& g);
-        static bool negativeCycle(const Graph& g);
-        static std::string BFS(const Graph& g, size_t start, size_t end);
-        static std::string Dijkstra(const Graph& g, size_t start, size_t end);
-        static std::string BellmanFord(const Graph& g, size_t start, size_t end);
+        static void dfs(const std::vector<std::vector<int>> &graph_matrix, std::vector<bool> &visited, size_t current_node);
+        static bool isConnected(const Graph &g);
+        static std::string shortestPath(const Graph &g, int start, int end);
+        static std::string isContainsCycle(const Graph &g);
+        static std::string directedGetCycle(const Graph &g);
+        static std::string isBipartite(const Graph &g);
+        static bool directedDFSForCycle(const std::vector<std::vector<int>> &graph_matrix, size_t v, std::vector<bool> &visited, std::vector<bool> &recStack, std::vector<size_t> &cycle);
+        static std::string undirectedGetCycle(const Graph &g);
+        static bool undirectedDFSForCycle(const std::vector<std::vector<int>> &graph_matrix, size_t v, std::vector<bool> &visited, int parent, std::vector<size_t> &cycle);
+        static bool negativeCycle(const Graph &g);
+        static std::string BFS(const Graph &g, size_t start, size_t end);
+        static std::string Dijkstra(const Graph &g, size_t start, size_t end);
+        static std::string BellmanFord(const Graph &g, size_t start, size_t end);
     };
 
 }
